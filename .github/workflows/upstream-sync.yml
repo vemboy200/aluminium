@@ -1,0 +1,124 @@
+name: Sync with upstream Helium
+
+# Once a week, merge imputnet/helium's main into Aluminium's main.
+# If the merge conflicts, open a PR from the upstream-sync branch instead,
+# and refresh that same PR every week until someone resolves and merges it.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_URL: https://github.com/imputnet/helium.git
+  SYNC_BRANCH: upstream-sync
+  # Helium workflows that Aluminium deleted on purpose. If upstream edits
+  # them, the merge keeps them deleted instead of stopping on a conflict.
+  KEEP_DELETED: >-
+    .github/workflows/release-and-tag.yml
+    .github/workflows/stale.yml
+    .github/workflows/i18n-notify.yml
+
+jobs:
+  sync:
+    if: github.repository == 'vemboy200/aluminium'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+          # GITHUB_TOKEN can't push commits that touch workflow files, and
+          # its pushes don't trigger CI, so a personal token is used instead.
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Merge upstream or open a conflict PR
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::The SYNC_TOKEN secret is not set. See the comment at the top of this workflow."
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git remote add upstream "$UPSTREAM_URL"
+          git fetch --no-tags upstream main
+          UP=$(git rev-parse upstream/main)
+          SHORT=${UP:0:8}
+          TODAY=$(date -u +%F)
+
+          OPEN_PR=$(gh pr list --head "$SYNC_BRANCH" --base main --state open \
+            --json number --jq '.[0].number // empty')
+
+          if git merge-base --is-ancestor "$UP" HEAD; then
+            echo "Already up to date with upstream $SHORT."
+            exit 0
+          fi
+
+          if ! git merge --no-ff --no-edit -m "merge: sync with upstream helium ($SHORT)" "$UP"; then
+            for f in $KEEP_DELETED; do
+              if [ -n "$(git ls-files --unmerged -- "$f")" ]; then
+                git rm -q -- "$f"
+              fi
+            done
+
+            CONFLICTS=$(git diff --name-only --diff-filter=U)
+            if [ -n "$CONFLICTS" ]; then
+              git merge --abort
+              git push --force origin "$UP:refs/heads/$SYNC_BRANCH"
+
+              FILES=$(printf -- '- `%s`\n' $CONFLICTS)
+              if [ -n "$OPEN_PR" ]; then
+                gh pr comment "$OPEN_PR" --body "$(printf 'Updated on %s to upstream `%s`. Still conflicts in:\n\n%s' "$TODAY" "$SHORT" "$FILES")"
+                echo "Updated existing PR #$OPEN_PR."
+              else
+                gh pr create --base main --head "$SYNC_BRANCH" \
+                  --title "Sync with upstream Helium (merge conflicts)" \
+                  --body "$(cat <<EOF
+          This week's upstream Helium update (\`$SHORT\`) doesn't merge cleanly into \`main\`, so it wasn't synced automatically.
+
+          Conflicting files:
+
+          $FILES
+
+          To resolve it on your Mac:
+
+          \`\`\`bash
+          git checkout main && git pull fork main
+          git fetch origin && git merge origin/main
+          # fix the conflicts, refresh any affected patches with quilt, build and test
+          git commit && git push fork main
+          \`\`\`
+
+          Pushing the merge to \`main\` marks this PR as merged. If it's still open next week, this PR is updated to the newest upstream commit instead of opening a new one.
+          EOF
+                )"
+              fi
+              exit 0
+            fi
+
+            git commit --no-edit
+          fi
+
+          git push origin HEAD:main
+          echo "Merged upstream $SHORT into main."
+
+          if [ -n "$OPEN_PR" ]; then
+            gh pr close "$OPEN_PR" --delete-branch \
+              --comment "Upstream merged cleanly into \`main\` on $TODAY, so this PR isn't needed anymore."
+          fi
