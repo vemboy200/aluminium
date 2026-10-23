@@ -1,8 +1,6 @@
 <div align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="aluminium/branding/icon-dark.png" />
-        <img src="aluminium/branding/icon-light.png" title="Aluminium" alt="Aluminium logo" width="120" />
-    </picture>
+    <img src="aluminium/branding/logo.png"
+        title="Aluminium" alt="Aluminium logo" width="150" />
     <h1>Aluminium</h1>
     <p>
         A personal fork of Helium that brings back the Arc features I miss.
