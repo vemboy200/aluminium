@@ -1,40 +1,32 @@
-# Contributing to Helium
+# Contributing to Aluminium
 
-This repository contains Helium's shared Chromium patches, resources, and
-development tooling. Platform-specific packaging and build environments live in
-the platform repositories:
+Aluminium is a personal fork of [Helium](https://github.com/imputnet/helium). This repository contains its shared Chromium patches, resources, and development tooling. Most of these guidelines come from Helium's own contributing guide, adapted for Aluminium.
+
+Aluminium doesn't have its own platform packaging repos yet. Until it does, Helium's are the reference:
 
 - [Helium for macOS](https://github.com/imputnet/helium-macos)
 - [Helium for Linux](https://github.com/imputnet/helium-linux)
 - [Helium for Windows](https://github.com/imputnet/helium-windows)
 
-The same contribution guidelines apply to all platform repos.
+Never open issues or PRs on Helium's repos from this project. See [AGENTS.md](AGENTS.md).
 
 ## Before you start
 
 ### General
 
-- For platform-specific issues or features, open the issue or PR in the
-  related platform repository instead of this one.
-- Do not use AI to generate issue or PR descriptions. You will get banned
-  for spam without review. We want contributions from people, not bots.
+- AI help is allowed, as long as the change is tested on a real system. The full AI policy is in [AGENTS.md](AGENTS.md).
 
 ### Issues
 
 - Search existing issues before opening a new bug report or feature request.
 - When creating an issue, please follow the template and be as specific
   as possible.
-- Please do not create duplicate issues. We reserve the right to ban you
-  for repeatedly wasting our time through ignorance.
+- Please do not create duplicate issues.
 
 ### Contributions
 
-- For non-trivial changes, start with an issue and wait until a maintainer
-  confirms the bug or agrees that the feature should be implemented.
-- If an issue you want to work on is stale, mention an active maintainer
-  and show your intent to contribute.
-- Please do not use AI for contributing if you don't fully understand its
-  output. We will permanently ban you if you spam our repos with AI slop.
+- For non-trivial changes, start with an issue so we can agree on the feature before you build it.
+- Test every change on a real system before opening a PR, and say what you tested on. Untested changes are not merged.
 
 ## Development
 macOS is our primary development platform, so it's the recommended
@@ -72,8 +64,7 @@ When working in a platform repository, the usual workflow is:
 - Prefer existing Chromium or Helium patterns over introducing new abstractions.
 - Keep changes focused and minimal.
 - Proofread surrounding code before submitting.
-- When adding new Helium-authored files to the Chromium tree, include the Helium
-  copyright header used in other patches.
+- When adding new Aluminium-authored files to the Chromium tree, include a copyright header like the one Helium uses in its patches, with Aluminium's name.
 - Refer to existing Helium patches for guidance if necessary.
 
 ## Git style
@@ -146,7 +137,7 @@ Before opening a pull request, make sure that:
   Otherwise, the pull request is marked as draft.
 - The pull request description clearly explains the change scope. The
   description includes visuals (screenshots, videos) if applicable.
-- You mention which platforms you tested on.
+- You mention which platforms you tested on, and whether AI helped.
 - The branch is rebased on `main`, or at least the latest Chromium milestone.
 
 Small and focused pull requests are much easier to review. Please split your
@@ -154,7 +145,7 @@ changes into several follow-up PRs if necessary.
 
 ## Licensing
 
-By contributing to Helium, you agree that your changes will be licensed under
+By contributing to Aluminium, you agree that your changes will be licensed under
 the repository's existing licensing terms.
 
 <!-- Long referenced links -->
