@@ -7,14 +7,8 @@ body:
     attributes:
       value: |
         Before submitting this request, please search existing issues and make sure it's unique.
-        If you ignore this text, and create this one, you will be permanently banned from
-        interacting with the entire organization.
 
-        Please do not use AI for writing your request's description, no one wishes
-        to read that and thus your request will be closed.
-
-        If your request is for a platform-specific feature (e.g. for macOS), please
-        submit it to the relevant platform repo instead of the generic "helium" repo.
+        Aluminium is about bringing Arc's features to Helium. If you're asking for an Arc feature, say which one and how it worked in Arc.
   - type: input
     id: description
     attributes:
@@ -26,13 +20,13 @@ body:
     attributes:
       label: Who's implementing?
       options:
-        - label: I'm willing to implement this feature myself
+        - label: I'm willing to implement this feature myself (AI help is fine, as long as it's tested on a real system)
   - type: textarea
     id: prob
     attributes:
       label: The problem
       description: Please describe the problem you are solving or new feature you're suggesting
-      placeholder: I'm always frustrated when [...] happens
+      placeholder: In Arc I could [...], but in Helium/Aluminium [...]
     validations:
       required: true
   - type: textarea

@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug building or running Helium
+description: Report a bug building or running Aluminium
 labels: ["bug"]
 title: "[Bug]: "
 body:
@@ -7,16 +7,13 @@ body:
     attributes:
       value: |
         Before submitting this bug report, please search existing issues and make sure it's unique.
-        If you ignore this text, and create this one, you will be permanently banned from
-        interacting with the entire organization.
 
-        If you suspect your bug might be specific to a certain platform (e.g. macOS),
-        please submit it to the relevant repository instead of the root "helium" repo.
+        If the bug also happens in regular [Helium](https://helium.computer/), it isn't caused by Aluminium. Please report it to Helium yourself, in your own words, following [their guidelines](https://github.com/imputnet/helium/blob/main/CONTRIBUTING.md). Never link Aluminium issues or code there.
   - type: dropdown
     id: os
     attributes:
       label: Operating system
-      description: The OS you are running Helium on
+      description: The OS you are running Aluminium on
       options:
           - macOS
           - Linux
@@ -27,16 +24,15 @@ body:
     id: version
     attributes:
       label: Version
-      description: Can be copied from helium://settings/help
+      description: Can be copied from helium://settings/help, plus your OS version
     validations:
       required: true
   - type: checkboxes
     attributes:
       label: Have you tested that this is not an upstream issue or an issue with your configuration?
       options:
-        - label: I have tried reproducing this issue in Chrome and it could not be reproduced there
-        - label: I have tried reproducing this issue in ungoogled-chromium and it could not be reproduced there
-        - label: I have tried reproducing this issue in Helium with a new and empty profile using `--user-data-dir` command line argument and it could not be reproduced there
+        - label: I have tried reproducing this issue in regular Helium and it could not be reproduced there
+        - label: I have tried reproducing this issue in Aluminium with a new and empty profile using `--user-data-dir` command line argument and it could still be reproduced there
   - type: input
     id: description
     attributes:

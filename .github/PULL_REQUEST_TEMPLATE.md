@@ -1,18 +1,25 @@
-For your pull request to not get closed without review, please confirm that:
+Before your PR gets reviewed, please confirm that:
 
-- [ ] An issue exists where the maintainers agreed that this should be implemented
-      (an approved feature request, or confirmed bug).
-- [ ] I tested that my contribution works locally, and does not break anything,
-      otherwise I have marked my PR as draft.
-- [ ] If my contribution is non-trivial, I did not use AI to write most of it.
-- [x] I understand that I will be permanently banned from interacting with this
-      organization if I lied by checking any of these checkboxes.
+- [ ] For a non-trivial change, there's an issue for it first (an agreed feature request or a confirmed bug).
+- [ ] I built Aluminium with this change and tested it on a real system, otherwise I've marked the PR as draft.
+- [ ] I've said below whether AI helped with this PR (that's allowed, see [AGENTS.md](https://github.com/vemboy200/aluminium/blob/main/AGENTS.md)).
+- [ ] This PR is one feature or fix, not several.
 
-Tested on (check one or more):
-- [ ] Windows
+Tested on (check one or more, and add the OS version):
 - [ ] macOS
+- [ ] Windows
 - [ ] Linux
 
 ---
 
+**What this changes:**
+
 [short description of your PR goes here]
+
+**How I tested it:**
+
+[what you did to check it works, plus screenshots or a video if it changes the UI]
+
+**AI use:**
+
+[none / which tool and what it helped with]
